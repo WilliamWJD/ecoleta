@@ -1,6 +1,6 @@
-import { resolve } from 'path'
+const { resolve } = require('path')
 
-export default {
+module.exports =  {
     client: 'sqlite3',
     connection: {
         filename: resolve(__dirname, 'src', 'database', 'database.sqlite'),
