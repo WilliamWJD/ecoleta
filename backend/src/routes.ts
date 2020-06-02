@@ -9,5 +9,6 @@ routes.get('/items', ItemsController.index)
 
 routes.post('/points', PointController.create)
 routes.get('/points/:id', PointController.show)
+routes.get('/points', PointController.index)
 
 export default routes
