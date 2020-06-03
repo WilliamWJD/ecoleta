@@ -53,6 +53,7 @@
     overflow: hidden;
   
     margin-top: 40px;
+    transition: 0.8s;
   }
   
   #page-home .content main a span {
@@ -80,6 +81,7 @@
   }
   
   #page-home .content main a:hover {
+    
     background: #2FB86E;
   }
   
