@@ -4,6 +4,7 @@ import { FiArrowLeft } from 'react-icons/fi'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import axios from 'axios'
 import { LeafletMouseEvent } from 'leaflet'
+import { store } from 'react-notifications-component';
 
 import api from '../../services/api'
 
@@ -135,7 +136,19 @@ const CreatePoint: React.FC = () => {
 
         await api.post('/points', data)
 
-        alert("Ponto de coleta cadastrado com sucesso")
+        store.addNotification({
+            title: "Sucesso!",
+            message: "Ponto de coleta cadastrado com sucesso !",
+            type: "success",
+            insert: "top",
+            container: "top-right",
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+                duration: 5000,
+                onScreen: true
+            }
+        });
 
         history.push('/')
     }
