@@ -7,7 +7,6 @@ import { LeafletMouseEvent } from 'leaflet'
 import { store } from 'react-notifications-component';
 
 import api from '../../services/api'
-
 import './styles.css'
 
 import logo from '../../assets/logo.svg'
