@@ -3,8 +3,8 @@ import './App.css';
 
 import Routes from './routes'
 
-function App(){
-  return(
+function App() {
+  return (
     <>
       <Routes />
     </>

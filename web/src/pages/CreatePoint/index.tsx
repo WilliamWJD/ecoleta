@@ -4,24 +4,25 @@ import { FiArrowLeft } from 'react-icons/fi'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import axios from 'axios'
 import { LeafletMouseEvent } from 'leaflet'
+
 import api from '../../services/api'
 
 import './styles.css'
 
 import logo from '../../assets/logo.svg'
 
-interface Item{
-    id:number,
-    title:string,
-    image_url:string,
+interface Item {
+    id: number,
+    title: string,
+    image_url: string,
 }
 
-interface IBGEUFResponse{
-    sigla:string
+interface IBGEUFResponse {
+    sigla: string
 }
 
-interface IBGECityResponse{
-    nome:string
+interface IBGECityResponse {
+    nome: string
 }
 
 const CreatePoint: React.FC = () => {
@@ -29,28 +30,28 @@ const CreatePoint: React.FC = () => {
     const [ufs, setUfs] = useState<string[]>([])
     const [cities, setCities] = useState<string[]>([])
 
-    const [initialPosition, setInitialPosition] = useState<[number, number]>([0,0])
+    const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0])
 
     const [formData, setFormaData] = useState({
-        name:'',
-        email:'',
-        whatsapp:''
+        name: '',
+        email: '',
+        whatsapp: ''
     })
 
     const [selectedUf, setSelectedUf] = useState('0')
     const [selectedCity, setSelectedCity] = useState('0')
     const [selectedItems, setSelectedItems] = useState<number[]>([])
-    const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0,0])
+    const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0])
 
     const history = useHistory()
 
-    useEffect(()=>{
+    useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
             const { latitude, longitude } = position.coords
             setInitialPosition([latitude, longitude])
         })
-    },[])
-    
+    }, [])
+
     useEffect(() => {
         async function loadItems() {
             const response = await api.get('/items')
@@ -59,63 +60,63 @@ const CreatePoint: React.FC = () => {
         loadItems()
     }, [])
 
-    useEffect(()=>{
-        async function loadDistritos(){
+    useEffect(() => {
+        async function loadDistritos() {
             const response = await axios.get<IBGEUFResponse[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados')
             const ufInitials = response.data.map(uf => uf.sigla)
             setUfs(ufInitials)
         }
         loadDistritos()
-    },[])
+    }, [])
 
-    useEffect(()=>{
-        async function loadMunicipios(){
+    useEffect(() => {
+        async function loadMunicipios() {
             const response = await axios.get<IBGECityResponse[]>(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`)
             const cityNames = response.data.map(city => city.nome)
             setCities(cityNames)
             console.log(response.data)
         }
         loadMunicipios()
-    },[selectedUf])
+    }, [selectedUf])
 
-    function handleSelectUf(e: ChangeEvent<HTMLSelectElement>){
+    function handleSelectUf(e: ChangeEvent<HTMLSelectElement>) {
         const uf = e.target.value
         setSelectedUf(uf)
     }
 
-    function handleSelectCity(e: ChangeEvent<HTMLSelectElement>){
+    function handleSelectCity(e: ChangeEvent<HTMLSelectElement>) {
         const city = e.target.value
         setSelectedCity(city)
     }
 
-    function handleMapClick(event: LeafletMouseEvent){
+    function handleMapClick(event: LeafletMouseEvent) {
         setSelectedPosition([
             event.latlng.lat,
             event.latlng.lng
         ])
     }
 
-    function handleInputChange(event: ChangeEvent<HTMLInputElement>){
-        const {name, value} = event.target
-        setFormaData({ ...formData, [name]:value })
+    function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target
+        setFormaData({ ...formData, [name]: value })
     }
 
-    function handleSelectItem(id:number){
+    function handleSelectItem(id: number) {
         const alreadySelected = selectedItems.findIndex(item => item === id)
 
-        if(alreadySelected >= 0){
+        if (alreadySelected >= 0) {
             const filteredItems = selectedItems.filter(item => item !== id)
             setSelectedItems(filteredItems)
-        }else{
-            setSelectedItems([ ...selectedItems, id ])
+        } else {
+            setSelectedItems([...selectedItems, id])
         }
 
     }
 
-    async function handleSubmit(event: FormEvent){
+    async function handleSubmit(event: FormEvent) {
         event.preventDefault()
-        
-        const {name, email, whatsapp} = formData
+
+        const { name, email, whatsapp } = formData
         const uf = selectedUf
         const city = selectedCity
         const [latitude, longitude] = selectedPosition
@@ -133,8 +134,9 @@ const CreatePoint: React.FC = () => {
         }
 
         await api.post('/points', data)
-        alert('Ponto de coleta criado')
-        
+
+        alert("Ponto de coleta cadastrado com sucesso")
+
         history.push('/')
     }
 
@@ -195,8 +197,8 @@ const CreatePoint: React.FC = () => {
                         <span>Selecione o endereço no mapa</span>
                     </legend>
 
-                    <Map 
-                        center={initialPosition} 
+                    <Map
+                        center={initialPosition}
                         zoom={15}
                         onclick={handleMapClick}
                     >
@@ -211,8 +213,8 @@ const CreatePoint: React.FC = () => {
                     <div className="field-group">
                         <div className="field">
                             <label htmlFor="uf">Estado (UF)</label>
-                            <select 
-                                name="uf" 
+                            <select
+                                name="uf"
                                 id="uf"
                                 value={selectedUf}
                                 onChange={handleSelectUf}
@@ -225,7 +227,7 @@ const CreatePoint: React.FC = () => {
                         </div>
                         <div className="field">
                             <label htmlFor="city">Cidade</label>
-                            <select 
+                            <select
                                 id="city"
                                 name="city"
                                 value={selectedCity}
@@ -248,12 +250,12 @@ const CreatePoint: React.FC = () => {
 
                     <ul className="items-grid">
                         {items.map(item => (
-                            <li 
+                            <li
                                 key={item.id}
-                                onClick={()=>handleSelectItem(item.id)}
+                                onClick={() => handleSelectItem(item.id)}
                                 className={selectedItems.includes(item.id) ? 'selected' : ''}
                             >
-                                <img src={item.image_url} alt={item.title}/>
+                                <img src={item.image_url} alt={item.title} />
                                 <span>{item.title}</span>
                             </li>
                         ))}
