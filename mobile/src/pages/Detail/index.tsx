@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, Linking } from 'react-native'
 import Constants from 'expo-constants'
 import { Feather as Icon, FontAwesome } from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -52,6 +52,10 @@ const Detail = () => {
     })
   }
 
+  function handleWhatsapp(){
+    Linking.openURL(`whatsapp://send?phone=${data.point.whatsapp}&text=Tenho interesse sobre coleta de resíduos`)
+  }
+
   if(!data.point){
     return null
   }
@@ -80,7 +84,7 @@ const Detail = () => {
       </View>
 
       <View style={styles.footer}>
-        <RectButton style={styles.button} onPress={()=>{}}>
+        <RectButton style={styles.button} onPress={handleWhatsapp}>
           <FontAwesome name="whatsapp" size={20} color="#fff" />
           <Text style={styles.buttonText}>Whatsapp</Text>
         </RectButton>
