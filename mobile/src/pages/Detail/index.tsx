@@ -38,6 +38,7 @@ const Detail = () => {
     async function getDetailPoint(){
       const response = await api.get(`/points/${routeParams.point_id}`)
       setData(response.data)
+      console.log(response.data)
     }
     getDetailPoint()
   },[])
