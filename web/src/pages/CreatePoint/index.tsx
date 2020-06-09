@@ -6,6 +6,8 @@ import axios from 'axios'
 import { LeafletMouseEvent } from 'leaflet'
 import { store } from 'react-notifications-component';
 
+import Dropzone from '../../components/Dropzone'
+
 import api from '../../services/api'
 import './styles.css'
 
@@ -165,6 +167,8 @@ const CreatePoint: React.FC = () => {
 
             <form onSubmit={handleSubmit}>
                 <h1>Cadastro do <br /> ponto de coleta</h1>
+
+                <Dropzone />
 
                 <fieldset>
                     <legend>
