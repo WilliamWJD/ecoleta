@@ -10,7 +10,7 @@ Projeto desenvolvido durante o evento Next Level Week da Rocketseat, com o objet
 
 ## ☕ Funcionalidades
 - Cadastro de pontos de descarte e seus items de descarte
-- Listagem de pontos de coletas
+- Listagem de pontos de descarte
   - Filtro por cidade e estado
   - Filtro por items de descarte
 - Contato via e-mail
